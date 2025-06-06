@@ -1,65 +1,78 @@
-﻿#include <iostream>
+#include <iostream>
 #include <vector>
 using namespace std;
 
 int main() {
-    int n, m, k;
+	int n; 
+	int m;
+	cout << "Enter the size of Matrix (N - stroka, M - stolb): ";
+	cin >> n;
+	cin >> m;
+	if (n <= 0 || m <= 0) {
+		cout << "Wrong size, try new number";
+		return 1;
+	}
 
-    cout << "Enter the number of elements A: ";
-    cin >> n;
-    vector<int> A(n);
-    cout << "Enter the elements of A:" << endl;
-    for (int i = 0; i < n; i++) {
-        cin >> A[i];
-    }
+	vector<vector<int>> matrix(n, vector<int>(m));
+	cout << "Enter the elements of matrix (1 or 0): \n";
 
-    cout << "Enter the number of elements B: ";
-    cin >> m;
-    vector<int> B(m);
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < m; ++j) {
+			cin >> matrix[i][j];
+			if (matrix[i][j] != 0 && matrix[i][j] != 1) {
+				cout << "Wrong elements; \nTry write correct elements next time";
+				return 1;
+			}
+		}
+	}
 
-    cout << "Enter the elements of B:" << endl;
-    for (int i = 0; i < m; i++) {
-        cin >> B[i];
-    }
+	int Reflex = 1, Symm = 1, AntiSymm = 1, Transit = 1;
 
-    cout << "Enter the number of pair: ";
-    cin >> k;
-    vector<pair<int, int>> Otnosh(k);
+	if (n != m) {
+		Reflex = 0;
+	}
 
-    cout << "Enter the pair (A to B):" << endl;
-    for (int i = 0; i < k; i++) {
-        cin >> Otnosh[i].first >> Otnosh[i].second;
-    }
+	for (int i = 0; i < n; ++i) {
+		if (n == m && matrix[i][i] != 1) {
+			Reflex = 0;
+		}
+		for (int j = 0; j < m; ++j) {
+			if ( matrix[i][j] != matrix[j][i])
+				Symm = 0;
+			if (i != j && matrix[i][j] == 1 && matrix[i][i] == 1)
+				AntiSymm = 0;
+			for (int z = 0; z < m; ++z) {
+				if (matrix[i][j] == 1 && matrix[j][z] == 1 && matrix[i][z] != 1) {
+					Transit = 0;
+				}
+			}
+		}
+	}
 
+	cout << "Features Ratio";
 
-    cout << "\nOtnoshenie R: { ";
-    for (int i = 0; i < k; i++) {
-        cout << "(" << Otnosh[i].first << ", " << Otnosh[i].second << ")";
-        if (i != k - 1) cout << ", ";
-    }
-    cout << " }" << endl;
-
-    int function = 1;
-
-    for (int i = 0; i < n; i++) {
-        int count = 0;
-        for (int j = 0; j < k; j++) {
-            if (Otnosh[j].first == A[i]) {
-                count++;
-            }
-        }
-        if (count > 1) {
-            function = 0;
-            break;
-        }
-    }
-
-    if (function = 1) {
-        cout << "Otnoshenie is function.";
-    }
-    else {
-        cout << "Otnoshenie isn't function.";
-    }
-
-    return 0;
+	cout << "\nReflex: ";
+	if (Reflex == 1) {
+		cout << "Yes";
+	}
+	else
+		cout << "No";
+	cout << "\nSymm: ";
+	if (Symm == 1) {
+		cout << "Yes";
+	}
+	else
+		cout << "No";
+	cout << "\nAntiSymm: ";
+	if (AntiSymm == 1) {
+		cout << "Yes";
+	}
+	else
+		cout << "No";
+	cout << "\nTransit: ";
+	if (Transit == 1) {
+		cout << "Yes";
+	}
+	else
+		cout << "No";
 }
